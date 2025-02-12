@@ -1,0 +1,12 @@
+steps:
+  - name: 'gcr.io/cloud-builders/gradle'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+        ./gradlew clean build
+    id: 'Build'
+
+images:
+  - 'gcr.io/$PROJECT_ID/matematika'
