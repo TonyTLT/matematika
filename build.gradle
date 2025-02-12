@@ -19,6 +19,10 @@ configurations {
 	}
 }
 
+bootJar {
+	mainClass = 'eu.tony.matematika.MatematikaApplication'
+}
+
 repositories {
 	mavenCentral()
 }
