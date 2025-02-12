@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Welcome to Math Exercises</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<h1>Welcome to Math Exercises!</h1>
+<p>Click the button below to start solving tasks:</p>
+
+<form th:action="@{/math-exercise}" method="get">
+  <button type="submit">Start Exercises</button>
+</form>
+</body>
+</html>

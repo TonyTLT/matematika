@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Matematikos užduotys</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<h1>Matematikos užduotys</h1>
+
+<form th:action="@{/math-exercise}" method="get">
+  <button type="submit" class="generate-task">Nauja užduotis</button>
+</form>
+
+<p>Užduotis: <span th:text="${task}"></span></p>
+
+<br><br>
+
+<form th:action="@{/check-answer}" method="post">
+  <label for="userAnswer">Tavo atsakymas:</label>
+  <input type="number" id="userAnswer" name="userAnswer" required>
+  <input type="hidden" name="correctAnswer" th:value="${correctAnswer}">
+  <button type="submit">Tikrinti</button>
+</form>
+
+<p class="result-message" th:if="${resultMessage != null}" th:text="${resultMessage}"></p>
+</body>
+</html>
