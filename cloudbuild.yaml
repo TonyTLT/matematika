@@ -11,6 +11,20 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/matematika']
 
+  # Step 4: Deploy to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'matematika'  # The service name in Cloud Run
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/matematika'  # The image we pushed to Container Registry
+      - '--platform'
+      - 'managed'  # Use the managed Cloud Run platform (fully managed, no GKE)
+      - '--region'
+      - 'europe-north1'  # Or any region you want
+      - '--allow-unauthenticated'  # Allow unauthenticated access (remove if not needed)
+
 images:
   - 'gcr.io/$PROJECT_ID/matematika'
 
