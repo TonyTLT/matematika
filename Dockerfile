@@ -1,25 +1,12 @@
-# Use OpenJDK 21 as a base image
+# Use an OpenJDK 21 image as the base
 FROM eclipse-temurin:21-jdk
 
-# Set the working directory inside the container
-WORKDIR /app
+# Install Gradle
+RUN apt-get update && apt-get install -y wget \
+    && wget https://services.gradle.org/distributions/gradle-8.12.1-bin.zip \
+    && unzip gradle-8.12.1-bin.zip -d /opt/gradle \
+    && ln -s /opt/gradle/gradle-8.12.1/bin/gradle /usr/bin/gradle
 
-# Copy the Gradle wrapper and build files
-COPY gradlew gradlew
-COPY gradle gradle
-COPY build.gradle settings.gradle ./
-
-# Give execution permission to the Gradle wrapper
-RUN chmod +x gradlew
-
-# Build the application (skip tests for faster builds)
-RUN ./gradlew clean build -x test
-
-# Copy the built JAR file into the container
-COPY build/libs/*.jar app.jar
-
-# Expose the port the app runs on
-EXPOSE 8080
-
-# Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Set the Gradle version to use
+ENV GRADLE_HOME=/opt/gradle/gradle-8.12.1
+ENV PATH=$GRADLE_HOME/bin:$PATH
