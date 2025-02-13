@@ -1,15 +1,15 @@
 steps:
+  # Step 1: Build the JAR using Gradle
   - name: 'gcr.io/cloud-builders/gradle'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        apt-get update && apt-get install -y openjdk-21-jdk
-        export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
-        export PATH="$JAVA_HOME/bin:$PATH"
-        java -version  # Verify Java version
-        ./gradlew clean build
-    id: 'Build'
+    args: ['clean', 'build', '-x', 'test']
+
+  # Step 2: Build the Docker image (after JAR is built)
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/matematika', '.']
+
+  # Step 3: Push the Docker image to Google Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/matematika']
 
 images:
   - 'gcr.io/$PROJECT_ID/matematika'
