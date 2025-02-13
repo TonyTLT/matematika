@@ -1,9 +1,7 @@
 steps:
-  # Step 1: Build the JAR using Gradle with Java 21
-  - name: 'gcr.io/cloud-builders/gradle'
+  # Step 1: Use the custom Docker image to build the JAR with Java 21
+  - name: 'gcr.io/$PROJECT_ID/gradle-with-java21'  # Reference your custom image
     args: ['clean', 'build', '-x', 'test']
-    env:
-      - 'JAVA_HOME=/usr/lib/jvm/java-21-openjdk'
     dir: '.'  # Set the working directory for Gradle build
 
   # Step 2: Build the Docker image using the Java 21 image
@@ -15,10 +13,8 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/matematika']
 
-# Specify the image that was built and pushed to the registry
 images:
   - 'gcr.io/$PROJECT_ID/matematika'
 
-# Set logging to Cloud Logging only
 options:
   logging: CLOUD_LOGGING_ONLY
