@@ -1,30 +1,36 @@
-# === STAGE 1: Build the application ===
+# Use an official OpenJDK 21 runtime as a parent image
 FROM eclipse-temurin:21-jdk AS builder
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the Gradle wrapper and build files
+# Copy only essential build files first (better caching)
 COPY gradlew gradlew
 COPY gradle gradle
 COPY build.gradle settings.gradle ./
-COPY src src
 
 # Give execution permission to the Gradle wrapper
 RUN chmod +x gradlew
 
-# Build the application (skip tests for faster builds)
+# Download dependencies (this helps with caching)
+RUN ./gradlew dependencies
+
+# Copy the rest of the source code
+COPY src src
+
+# Build the application (skipping tests for speed)
 RUN ./gradlew clean build -x test
 
-# === STAGE 2: Create the final image ===
-FROM eclipse-temurin:21-jdk
+# Use a lightweight JDK for running the app
+FROM eclipse-temurin:21-jre
 
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the built JAR file from the first stage
+# Copy the built JAR from the builder stage
 COPY --from=builder /app/build/libs/*.jar app.jar
 
-# Expose the port your Spring Boot app runs on
+# Expose the port used by Spring Boot
 EXPOSE 8080
 
 # Run the application
