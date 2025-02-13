@@ -1,7 +1,7 @@
 steps:
   # Step 1: Use the custom Gradle image with Java 21 to build the JAR
   - name: 'gcr.io/$PROJECT_ID/gradle-with-java21'
-    args: ['clean', 'build', '-x', 'test']
+    args: ['clean', 'build', '-x', 'test', '-x', 'bootRun']  # Ensure bootRun is skipped
 
   # Step 2: Build the Docker image (using the previously built JAR)
   - name: 'gcr.io/cloud-builders/docker'
