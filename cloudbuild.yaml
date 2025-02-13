@@ -13,7 +13,6 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/matematika']
 
-# Specify the image that was built and pushed to the registry
 images:
   - 'gcr.io/$PROJECT_ID/matematika'
 
