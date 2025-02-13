@@ -17,6 +17,5 @@ steps:
 images:
   - 'gcr.io/$PROJECT_ID/matematika'
 
-# Set logging to Cloud Logging only
 options:
   logging: CLOUD_LOGGING_ONLY
