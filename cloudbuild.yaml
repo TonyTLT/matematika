@@ -6,13 +6,17 @@ steps:
   # Step 2: Build the Docker image (after JAR is built)
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/matematika', '.']
+    # Make sure to set the context (the directory with Dockerfile and the built JAR)
+    dir: 'build/libs'  # Ensure the Dockerfile is in the root directory (if not, adjust as necessary)
 
   # Step 3: Push the Docker image to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/matematika']
 
+# Specify the image that was built and pushed to the registry
 images:
   - 'gcr.io/$PROJECT_ID/matematika'
 
+# Set logging to Cloud Logging only
 options:
   logging: CLOUD_LOGGING_ONLY
