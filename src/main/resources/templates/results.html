@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Rezultatai</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<h1>Rezultatai</h1>
+
+<!-- Display result messages -->
+<div th:if="${resultMessages}">
+  <div class="result-messages">
+    <p class="result-message" th:each="message : ${resultMessages}" th:text="${message}"></p>
+  </div>
+</div>
+
+<!-- Button to generate new exercises (Moved to bottom) -->
+<div class="btn-container">
+  <form th:action="@{/math-exercise}" method="get">
+    <button type="submit" class="generate-task">Naujos užduotys</button>
+  </form>
+</div>
+
+</body>
+</html>
